@@ -36,55 +36,10 @@ class ConverterProvider extends ChangeNotifier {
     );
 
     return _format(converted);
-
-    // UnitCategory get selectedCategory => _categories[_selectedCategoryIndex];
-    // List<String> get units => selectedCategory.unit;
-
-    //   return UnitCategoryModel.convert(
-    //     value: value,
-    //     fromUnit: _fromUnit,
-    //     toUnit: _toUnit,
-    //     categoryName: selectedCategory.name,
-    //   );
-    // }
-
-    //   _selectedCategoryIndex = index;
-    //   _setDefaultUnitsForSelectedCategory();
-    //   notifyListeners();
-    // }
-
-    // void updateFromUnit(String value) {
-    //   if (_fromUnit == value) return;
-
-    //   _fromUnit = value;
-    //   notifyListeners();
-    // }
-
-    // void updateToUnit(String value) {
-    //   if (_toUnit == value) return;
-
-    //   _toUnit = value;
-    //   notifyListeners();
-    // }
-
-    // void _setDefaultUnitsForSelectedCategory() {
-    //   final availableUnits = selectedCategory.unit;
-
-    //   if (availableUnits.isEmpty) {
-    //     _fromUnit = '';
-    //     _toUnit = '';
-    //     return;
-    //   }
-
-    //   _fromUnit = availableUnits.first;
-    //   _toUnit = availableUnits.length > 1
-    //       ? availableUnits[1]
-    //       : availableUnits.first;
-    // }
   }
 
   void selectCategory(int index) {
-    selectedCategoryIndex == index;
+    _selectedCategoryIndex = index;
     _fromUnit = _currentUnit[0];
     _toUnit = _currentUnit[1];
     _inputText = '';
@@ -92,7 +47,7 @@ class ConverterProvider extends ChangeNotifier {
   }
 
   void updateInputText(String value) {
-    _inputText == value;
+    _inputText = value;
     notifyListeners();
   }
 

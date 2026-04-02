@@ -10,28 +10,45 @@ class ResultCart extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<ConverterProvider>(
       builder: (context, provider, child) {
-        return Container(
-          padding: .all(20),
-          width: .infinity,
-          height: 200,
-           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary.withAlpha(80),
+        final theme = Theme.of(context);
+        final hasResult = provider.result != AppStrings.resultHint;
 
-            borderRadius: BorderRadius.circular(10),
+        return Container(
+          padding: const EdgeInsets.all(24),
+          width: double.infinity,
+          height: 200,
+          decoration: BoxDecoration(
+            color: theme.colorScheme.primaryContainer,
+            borderRadius: BorderRadius.circular(20),
           ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
                 AppStrings.resultLabel,
-                style: TextStyle(fontSize: 20, fontWeight: .w600),
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: theme.colorScheme.onPrimaryContainer.withValues(
+                    alpha: 0.75,
+                  ),
+                ),
               ),
-              Text(provider.result,
-              style: TextStyle(fontSize: 20, fontWeight: .w600),
-              )
+              const SizedBox(height: 16),
+              Text(
+                provider.result,
+                style: (hasResult
+                        ? theme.textTheme.headlineMedium
+                        : theme.textTheme.titleMedium)
+                    ?.copyWith(
+                  fontWeight: hasResult ? FontWeight.w800 : FontWeight.w500,
+                  color: theme.colorScheme.onPrimaryContainer,
+                ),
+              ),
             ],
           ),
         );
-      }
+      },
     );
   }
 }

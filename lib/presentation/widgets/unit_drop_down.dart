@@ -53,14 +53,29 @@ class _UnitDropDownState extends State<UnitDropDown> {
                 color: theme.colorScheme.outline.withValues(alpha: 0.4),
               ),
             ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(16),
+              borderSide: BorderSide(
+                color: theme.colorScheme.primary,
+                width: 1.5,
+              ),
+            ),
           ),
-          icon: const Icon(Icons.arrow_drop_down_rounded),
+          icon: Icon(
+            Icons.arrow_drop_down_rounded,
+            color: theme.colorScheme.primary,
+          ),
           borderRadius: BorderRadius.circular(16),
           items: widget.unit
               .map(
                 (unit) => DropdownMenuItem<String>(
                   value: unit,
-                  child: Text(unit),
+                  child: Text(
+                    unit,
+                    style: theme.textTheme.bodyLarge?.copyWith(
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                 ),
               )
               .toList(),

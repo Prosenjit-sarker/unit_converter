@@ -27,7 +27,7 @@ class ConverterProvider extends ChangeNotifier {
   String get result {
     final double? inputValue = double.tryParse(_inputText);
 
-    if (inputValue == null) return AppStrings.resultLabel;
+    if (inputValue == null) return AppStrings.resultHint;
     final double converted = UnitCategoryModel.convert(
       value: inputValue,
       fromUnit: fromUnit,

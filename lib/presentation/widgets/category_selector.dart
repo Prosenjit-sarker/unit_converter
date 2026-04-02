@@ -7,26 +7,52 @@ class CategorySelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provaider = context.watch<ConverterProvider>();
+    final provider = context.watch<ConverterProvider>();
+    final theme = Theme.of(context);
     return Row(
       spacing: 10,
-      children: List.generate(provaider.categories.length, (index) {
-        final category = provaider.categories[index];
-        final isSelected = provaider.selectedCategoryIndex == index;
-        return GestureDetector(
-          onTap: () => context.read<ConverterProvider>().selectCategory(index),
-          child: Container(
-            padding: .all(20),
-            decoration: BoxDecoration(color: isSelected ? Theme.of(context).colorScheme.primary.withAlpha(80)
-             : Theme.of(context).colorScheme.surfaceContainerHigh, 
-          borderRadius: .circular(16),
-          ),
-          child: Column(
-            children: [
-              Icon(category.iconData), Text(category.name)
-          
-            ],
-          ),
+      children: List.generate(provider.categories.length, (index) {
+        final category = provider.categories[index];
+        final isSelected = provider.selectedCategoryIndex == index;
+        return Expanded(
+          child: GestureDetector(
+            onTap: () => context.read<ConverterProvider>().selectCategory(index),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+              decoration: BoxDecoration(
+                color: isSelected
+                    ? theme.colorScheme.primaryContainer
+                    : theme.colorScheme.surfaceContainerHigh,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: isSelected
+                      ? theme.colorScheme.primary.withValues(alpha: 0.2)
+                      : theme.colorScheme.outline.withValues(alpha: 0.12),
+                ),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    category.iconData,
+                    color: isSelected
+                        ? theme.colorScheme.primary
+                        : theme.colorScheme.onSurfaceVariant,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    category.name,
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: isSelected
+                          ? theme.colorScheme.onPrimaryContainer
+                          : theme.colorScheme.onSurface,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         );
       }),

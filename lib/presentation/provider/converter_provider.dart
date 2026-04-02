@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:unit_converter/core/app_strings.dart';
 import 'package:unit_converter/data/model/unit_category_model.dart';
 import 'package:unit_converter/domain/entities/unit_category.dart';
 
@@ -20,77 +21,104 @@ class ConverterProvider extends ChangeNotifier {
 
   ConverterProvider() {
     _fromUnit = _currentUnit[0];
+    _toUnit = _currentUnit[1];
   }
 
-  // UnitCategory get selectedCategory => _categories[_selectedCategoryIndex];
-  // List<String> get units => selectedCategory.unit;
+  String get result {
+    final double? inputValue = double.tryParse(_inputText);
 
-  // double? get result {
-  //   final value = double.tryParse(_inputText);
+    if (inputValue == null) return AppStrings.resultLabel;
+    final double converted = UnitCategoryModel.convert(
+      value: inputValue,
+      fromUnit: fromUnit,
+      toUnit: toUnit,
+      categoryName: _categories[_selectedCategoryIndex].name,
+    );
 
-  //   if (value == null || _fromUnit.isEmpty || _toUnit.isEmpty) {
-  //     return null;
-  //   }
+    return _format(converted);
 
-  //   return UnitCategoryModel.convert(
-  //     value: value,
-  //     fromUnit: _fromUnit,
-  //     toUnit: _toUnit,
-  //     categoryName: selectedCategory.name,
-  //   );
-  // }
+    // UnitCategory get selectedCategory => _categories[_selectedCategoryIndex];
+    // List<String> get units => selectedCategory.unit;
 
-  // void selectCategory(int index) {
-  //   if (index < 0 || index >= _categories.length) return;
-  //   if (_selectedCategoryIndex == index) return;
+    //   return UnitCategoryModel.convert(
+    //     value: value,
+    //     fromUnit: _fromUnit,
+    //     toUnit: _toUnit,
+    //     categoryName: selectedCategory.name,
+    //   );
+    // }
 
-  //   _selectedCategoryIndex = index;
-  //   _setDefaultUnitsForSelectedCategory();
-  //   notifyListeners();
-  // }
+    //   _selectedCategoryIndex = index;
+    //   _setDefaultUnitsForSelectedCategory();
+    //   notifyListeners();
+    // }
 
-  // void updateInputText(String value) {
-  //   if (_inputText == value) return;
+    // void updateFromUnit(String value) {
+    //   if (_fromUnit == value) return;
 
-  //   _inputText = value;
-  //   notifyListeners();
-  // }
+    //   _fromUnit = value;
+    //   notifyListeners();
+    // }
 
-  // void updateFromUnit(String value) {
-  //   if (_fromUnit == value) return;
+    // void updateToUnit(String value) {
+    //   if (_toUnit == value) return;
 
-  //   _fromUnit = value;
-  //   notifyListeners();
-  // }
+    //   _toUnit = value;
+    //   notifyListeners();
+    // }
 
-  // void updateToUnit(String value) {
-  //   if (_toUnit == value) return;
+    // void _setDefaultUnitsForSelectedCategory() {
+    //   final availableUnits = selectedCategory.unit;
 
-  //   _toUnit = value;
-  //   notifyListeners();
-  // }
+    //   if (availableUnits.isEmpty) {
+    //     _fromUnit = '';
+    //     _toUnit = '';
+    //     return;
+    //   }
 
-  // void swapUnits() {
-  //   if (_fromUnit.isEmpty || _toUnit.isEmpty) return;
+    //   _fromUnit = availableUnits.first;
+    //   _toUnit = availableUnits.length > 1
+    //       ? availableUnits[1]
+    //       : availableUnits.first;
+    // }
+  }
 
-  //   final currentFrom = _fromUnit;
-  //   _fromUnit = _toUnit;
-  //   _toUnit = currentFrom;
-  //   notifyListeners();
-  // }
+  void selectCategory(int index) {
+    selectedCategoryIndex == index;
+    _fromUnit = _currentUnit[0];
+    _toUnit = _currentUnit[1];
+    _inputText = '';
+    notifyListeners();
+  }
 
-  // void _setDefaultUnitsForSelectedCategory() {
-  //   final availableUnits = selectedCategory.unit;
+  void updateInputText(String value) {
+    _inputText == value;
+    notifyListeners();
+  }
 
-  //   if (availableUnits.isEmpty) {
-  //     _fromUnit = '';
-  //     _toUnit = '';
-  //     return;
-  //   }
+  void updateFromUnit(String unit) {
+    _fromUnit = unit;
+    notifyListeners();
+  }
 
-  //   _fromUnit = availableUnits.first;
-  //   _toUnit = availableUnits.length > 1
-  //       ? availableUnits[1]
-  //       : availableUnits.first;
-  // }
+  void updateToUnit(String unit) {
+    _toUnit = unit;
+    notifyListeners();
+  }
+
+  void swap() {
+    final temp = _fromUnit;
+    _fromUnit = _toUnit;
+    _toUnit = temp;
+
+    notifyListeners();
+  }
+
+  String _format(double value) {
+    String str = value.toStringAsFixed(6);
+
+    str = str.replaceAll(RegExp(r'0+$'), '');
+    str = str.replaceAll(RegExp(r'\.$'), '');
+    return str;
+  }
 }
